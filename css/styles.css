@@ -20,7 +20,7 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 500;
+	width: 750;
 	height: 500;
 	background-color: #000000;
 	/*background-image: url('img/background_v2.jpg');*/
@@ -32,7 +32,14 @@ body {
 	display: block;
 	position: absolute;
 	width: 50;
-	height: 50;
+	height: 60;
+}
+
+.tardis {
+	display: block;
+	position: absolute;
+	width: 35;
+	height: 60;
 }
 
 .tiro {

@@ -1,14 +1,19 @@
 var tecla,
     keyBump,
     dalekMovement,
-    shotInterval,
     posDalek = 0,
-    posShot = 0,
     shotVis = false,
+    tardisVis = true,
     dalekSpeed = 10,
-    TAMANHOMAPA = 500,
+    MAPHORSIZE = 750,
+    MAPVERSIZE = 500,
     TAMANHOOBJETO = 63,
-    CROSSBORDERTOLERANCE = 15;
+    CROSSBORDERTOLERANCE = 15,
+    TARDISHEIGHT = 60,
+    tardisSpeed = 5;
+
+var posTardis = new Array((MAPHORSIZE - 73), 187),
+    posShot = new Array(0 ,0);
 
 $(document).on("dblclick", function() {
     return false;
@@ -44,31 +49,83 @@ $(document).on("ready", function() {
     $.resetGame = function() {
         $("#dalek").css("top", 0);
         $("#dalek").css("left", 10);
+        $("#tardis").css("top", posTardis[1]);
+        $("#tardis").css("left", posTardis[0]);
+        $.moveTardis();
+    }
+
+    $.moveTardis = function() {
+        if (tardisVis === true) {
+            var tardisInterval = setInterval(function() {
+                $("#tardis").css("left", posTardis[0]);
+                $("#tardis").css("top", posTardis[1]);
+
+                if (posTardis[0] > 0) {
+                    posTardis[0] = posTardis[0] - tardisSpeed;
+                    $("#tardis").css("left", posTardis[0]);
+                } else {
+                    tiro.hide();
+                    tardisVis = false;
+                    clearInterval(tardisInterval);
+                }
+            }, 50);
+        }
     }
 
     $.shoot = function() {
         if (shotVis === false) {
         shotVis = true;
             tiro = $("#tiro");
-            tiro.css("top", (posDalek + 25));
-            posShot = 60;
-            tiro.css("left", posShot);
+            posShot[0] = 60;
+            posShot[1] = posDalek + 25;
+            tiro.css("top", posShot[1]);
+            tiro.css("left", posShot[0]);
             tiro.show();
             var shotInterval = setInterval(function() {
-                if (posShot <= (TAMANHOMAPA - 25)) {
-                    posShot = posShot + 10;
-                    tiro.css("left", posShot);
+                if ($.hit()) {
+                    tiro.hide();
+                    shotVis = false;
+                    $.resetTardis();
+                    clearInterval(shotInterval);
+                } else if (posShot[0] <= (MAPHORSIZE - 25)) {
+                    posShot[0] = posShot[0] + 10;
+                    tiro.css("left", posShot[0]);
                 } else {
                     tiro.hide();
                     shotVis = false;
                     clearInterval(shotInterval);
                 }
-            }, 8);
+            }, 5);
         }
     }
 
-    $.moveShot = function(tiro, shotInterval) {
+    $.resetTardis = function() {
+        tardisVis = false;
+        $("#tardis").hide();
+        tardisSpeed = tardisSpeed + 1
+        posTardis[0] = MAPHORSIZE - 73;
+        posTardis[1] = Math.floor(Math.random() * (MAPVERSIZE - TARDISHEIGHT));
+        $("#tardis").css("left", posTardis[0]);
+        $("#tardis").css("top", posTardis[1]);
+        $("#tardis").show();
+        tardisVis = true;
+
     }
+
+    $.hit = function() {
+        if (
+            (
+                (posShot[0] >= (posTardis[0] - 20)) &&
+                (posShot[0] < (posTardis[0] + 35))
+            ) && (
+                (posShot[1] >= posTardis[1]) &&
+                (posShot[1] < (posTardis[1] + TARDISHEIGHT))
+            )
+        ){
+            return true;
+        }
+        return false;
+    };
 
     $.moveDalek = function(direction) {
         if (direction == "up") {
@@ -81,10 +138,10 @@ $(document).on("ready", function() {
     }
 
     $.ajustaLimite = function(posicao) {
-        if (posicao > (TAMANHOMAPA - TAMANHOOBJETO)) {
+        if (posicao > (MAPVERSIZE - TAMANHOOBJETO)) {
             posicao = -CROSSBORDERTOLERANCE;
         } else if (posicao <= (-TAMANHOOBJETO + CROSSBORDERTOLERANCE)) {
-            posicao = posicao + (TAMANHOMAPA - CROSSBORDERTOLERANCE);
+            posicao = posicao + (MAPVERSIZE - CROSSBORDERTOLERANCE);
         }
         return posicao;
     };
