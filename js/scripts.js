@@ -5,8 +5,8 @@ var tecla,
     shotVis = false,
     tardisVis = true,
     dalekSpeed = 10,
-    MAPHORSIZE = 750,
-    MAPVERSIZE = 500,
+    MAPHORSIZE = 900,
+    MAPVERSIZE = 400,
     TAMANHOOBJETO = 63,
     CROSSBORDERTOLERANCE = 15,
     TARDISHEIGHT = 60,
@@ -146,13 +146,23 @@ $(document).on("ready", function() {
         return posicao;
     };
 
-    $(".swipeMove").on("swipeup", function() {
+    /*$(".swipeMove").on("swipeup", function() {
         tecla = 38;
     }).on("swipedown", function() {
         tecla = 40;
+    });*/
+
+    $(".tapMove").on("touchstart", function() {
+        posY = event.touches[0].pageY;
+        posDalek = posY - 28;
+        $("#dalek").animate({
+                top: posDalek
+            },
+            100);
+        //$("#dalek").css("top", posDalek);
     });
     
-    $(".shootTap").on("tap", function() {
+    $(".tapShoot").on("touchstart", function() {
         $.shoot();
     });
 

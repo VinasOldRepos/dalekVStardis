@@ -20,8 +20,8 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 750;
-	height: 500;
+	width: 900;
+	height: 400;
 	background-color: #000000;
 	/*background-image: url('img/background_v2.jpg');*/
 	background-repeat: repeat;
@@ -53,8 +53,8 @@ body {
 #leftSensor {
 	float: left;
 	position: absolute;
-	width: 370px;
-	height: 500px;
+	width: 440px;
+	height: 400px;
 	left: 0px;
 	top: 0px;
 }
@@ -62,9 +62,9 @@ body {
 #rightSensor {
 	float: left;
 	position: absolute;
-	width: 370px;
-	height: 500px;
-	left: 380px;
+	width: 440px;
+	height: 400px;
+	left: 460px;
 	top: 0px;
 }
 
