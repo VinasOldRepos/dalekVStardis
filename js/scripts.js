@@ -146,15 +146,15 @@ $(document).on("ready", function() {
         return posicao;
     };
 
-    /*$("#l_fundo, #ladrao").on("swipeleft", function() {
-        tecla = 37;
-    }).on("swiperight", function() {
-        tecla = 39;
-    }).on("swipeup", function() {
+    $(".swipeMove").on("swipeup", function() {
         tecla = 38;
     }).on("swipedown", function() {
         tecla = 40;
-    });*/
+    });
+    
+    $.(".shootTap").on("tap", function() {
+        $.shoot();
+    });
 
 
     /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/

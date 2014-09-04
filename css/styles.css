@@ -49,3 +49,22 @@ body {
 	height: 5px;
 	background-color: #b2e617;
 }
+
+#sensorLeft {
+float: left;
+position: absolute;
+width: 370px;
+height: 500px;
+left: 0px;
+top: 0px;
+}
+
+#sensorRight {
+float: left;
+position: absolute;
+width: 370px;
+height: 500px;
+left: 380px;
+top: 0px;
+}
+
