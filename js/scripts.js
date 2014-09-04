@@ -64,7 +64,7 @@ $(document).on("ready", function() {
                     posTardis[0] = posTardis[0] - tardisSpeed;
                     $("#tardis").css("left", posTardis[0]);
                 } else {
-                    tiro.hide();
+                    $("#tiro").hide();
                     tardisVis = false;
                     clearInterval(tardisInterval);
                 }
@@ -152,7 +152,7 @@ $(document).on("ready", function() {
         tecla = 40;
     });
     
-    $.(".shootTap").on("tap", function() {
+    $(".shootTap").on("tap", function() {
         $.shoot();
     });
 
