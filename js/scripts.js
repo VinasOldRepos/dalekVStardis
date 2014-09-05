@@ -37,7 +37,7 @@ $(document).on("ready", function() {
         MAPHORSIZE = $("#fundo").css("width").replace(new RegExp("px", 'g'), "");
         MAPVERSIZE = $("#fundo").css("height").replace(new RegExp("px", 'g'), "");
         posTardis = new Array(
-                (MAPHORSIZE - 60),
+                (MAPHORSIZE - 45),
                 Math.floor(Math.random() * (MAPVERSIZE - TARDISHEIGHT))
             );
     }
@@ -57,13 +57,19 @@ $(document).on("ready", function() {
 
     $.moveTardis = function() {
         if (tardisVis === true) {
+
             var tardisInterval = setInterval(function() {
                 $("#tardis").css("left", posTardis[0]);
                 $("#tardis").css("top", posTardis[1]);
 
                 if (posTardis[0] > 0) {
                     posTardis[0] = posTardis[0] - tardisSpeed;
-                    $("#tardis").css("left", posTardis[0]);
+                    $("#tardis").animate(
+                        {left: posTardis[0]},
+                        30
+                    );
+
+                    //$("#tardis").css("left", posTardis[0]);
                 } else {
                     $("#tiro").hide();
                     tardisVis = false;
@@ -84,6 +90,8 @@ $(document).on("ready", function() {
             tiro.show();
             var shotInterval = setInterval(function() {
                 if ($.hit()) {
+                    tardisVis = false;
+                    $("#tardis").hide();
                     score = score + 1;
                     $("#score").html(score);
                     tiro.hide();
@@ -106,12 +114,14 @@ $(document).on("ready", function() {
         tardisVis = false;
         $("#tardis").hide();
         tardisSpeed = tardisSpeed + 1
-        posTardis[0] = MAPHORSIZE - 60;
+        posTardis[0] = MAPHORSIZE - 45;
         posTardis[1] = Math.floor(Math.random() * (MAPVERSIZE - TARDISHEIGHT));
         $("#tardis").css("left", posTardis[0]);
         $("#tardis").css("top", posTardis[1]);
-        $("#tardis").show();
-        tardisVis = true;
+        setTimeout(function() {
+            $("#tardis").show();
+            tardisVis = true;
+        }, 50);
 
     }
 
@@ -134,10 +144,10 @@ $(document).on("ready", function() {
         posY = event.touches[0].pageY;
         posDalek = posY - 28;
         console.log(posDalek);
-        $("#dalek").animate({
-                top: posDalek
-            },
-            100);
+        $("#dalek").animate(
+            {top: posDalek},
+            100
+        );
         //$("#dalek").css("top", posDalek);
     });
     
