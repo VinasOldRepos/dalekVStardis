@@ -5,15 +5,17 @@ var tecla,
     shotVis = false,
     tardisVis = true,
     dalekSpeed = 10,
+    tiroWidth = 15,
     MAPHORSIZE = 900,
     MAPVERSIZE = 400,
-    TAMANHOOBJETO = 63,
+    dalekHeight = 63,
     CROSSBORDERTOLERANCE = 15,
     TARDISHEIGHT = 60,
-    tardisSpeed = 5;
+    tardisSpeed = 5,
+    posTardis,
+    score = 0;
 
-var posTardis = new Array((MAPHORSIZE - 73), 187),
-    posShot = new Array(0 ,0);
+var posShot = new Array(0 ,0);
 
 $(document).on("dblclick", function() {
     return false;
@@ -31,31 +33,26 @@ $(document).on("keyup", function(e) {
 
 $(document).on("ready", function() {
 
-    MAPHORSIZE = $("#fundo").css("width");
-    MAPVERSIZE = $("#fundo").css("height");
-    alert(MAPHORSIZE);
-
-    $.gameLoop = function() {
-        if (tecla == 38) {
-            dalekMovement = "up";
-        } else if (tecla == 40) {
-            dalekMovement = "down";
-        } else if ((tecla == 32) && (tecla != keyBump)) {
-            $.shoot();
-            keyBump = false;
-        /*} else if (tecla != 32) {
-            keyBump = false;*/
-        }
-        $.moveDalek(dalekMovement);
-        setTimeout($.gameLoop, 40);
-    };
+    $.setupGame = function() {
+        MAPHORSIZE = $("#fundo").css("width").replace(new RegExp("px", 'g'), "");
+        MAPVERSIZE = $("#fundo").css("height").replace(new RegExp("px", 'g'), "");
+        posTardis = new Array(
+                (MAPHORSIZE - 60),
+                Math.floor(Math.random() * (MAPVERSIZE - TARDISHEIGHT))
+            );
+    }
 
     $.resetGame = function() {
-        $("#dalek").css("top", 0);
-        $("#dalek").css("left", 10);
-        $("#tardis").css("top", posTardis[1]);
-        $("#tardis").css("left", posTardis[0]);
-        $.moveTardis();
+        setTimeout(function() {
+                $.setupGame();
+                $("#dalek").css("top", 0);
+                $("#dalek").css("left", 10);
+                $("#tardis").css("top", posTardis[1]);
+                $("#tardis").css("left", posTardis[0]);
+                $.moveTardis();
+            },
+            300
+        );
     }
 
     $.moveTardis = function() {
@@ -78,20 +75,22 @@ $(document).on("ready", function() {
 
     $.shoot = function() {
         if (shotVis === false) {
-        shotVis = true;
+            shotVis = true;
             tiro = $("#tiro");
             posShot[0] = 60;
-            posShot[1] = posDalek + 25;
+            posShot[1] = posDalek + tiroWidth + 5;
             tiro.css("top", posShot[1]);
             tiro.css("left", posShot[0]);
             tiro.show();
             var shotInterval = setInterval(function() {
                 if ($.hit()) {
+                    score = score + 1;
+                    $("#score").html(score);
                     tiro.hide();
                     shotVis = false;
                     $.resetTardis();
                     clearInterval(shotInterval);
-                } else if (posShot[0] <= (MAPHORSIZE - 25)) {
+                } else if (posShot[0] <= (MAPHORSIZE - tiroWidth - 5)) {
                     posShot[0] = posShot[0] + 10;
                     tiro.css("left", posShot[0]);
                 } else {
@@ -107,7 +106,7 @@ $(document).on("ready", function() {
         tardisVis = false;
         $("#tardis").hide();
         tardisSpeed = tardisSpeed + 1
-        posTardis[0] = MAPHORSIZE - 73;
+        posTardis[0] = MAPHORSIZE - 60;
         posTardis[1] = Math.floor(Math.random() * (MAPVERSIZE - TARDISHEIGHT));
         $("#tardis").css("left", posTardis[0]);
         $("#tardis").css("top", posTardis[1]);
@@ -131,34 +130,10 @@ $(document).on("ready", function() {
         return false;
     };
 
-    $.moveDalek = function(direction) {
-        if (direction == "up") {
-            posDalek = posDalek - dalekSpeed;
-        } else if (direction == "down") {
-            posDalek = posDalek + dalekSpeed;
-        }
-        posDalek = $.ajustaLimite(posDalek);
-        $("#dalek").css("top", posDalek);
-    }
-
-    $.ajustaLimite = function(posicao) {
-        if (posicao > (MAPVERSIZE - TAMANHOOBJETO)) {
-            posicao = -CROSSBORDERTOLERANCE;
-        } else if (posicao <= (-TAMANHOOBJETO + CROSSBORDERTOLERANCE)) {
-            posicao = posicao + (MAPVERSIZE - CROSSBORDERTOLERANCE);
-        }
-        return posicao;
-    };
-
-    /*$(".swipeMove").on("swipeup", function() {
-        tecla = 38;
-    }).on("swipedown", function() {
-        tecla = 40;
-    });*/
-
     $(".tapMove").on("touchstart", function() {
         posY = event.touches[0].pageY;
         posDalek = posY - 28;
+        console.log(posDalek);
         $("#dalek").animate({
                 top: posDalek
             },
@@ -173,6 +148,5 @@ $(document).on("ready", function() {
 
     /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
     $.resetGame()
-    $.gameLoop();
 
 });

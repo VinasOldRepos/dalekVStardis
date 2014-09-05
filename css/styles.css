@@ -1,11 +1,11 @@
 @font-face {
     font-family: BitParty;
-    src: url('/Application/View/font/8_bit_party.ttf');
+    src: url('../font/8_bit_party.ttf');
 }
 
 @font-face {
     font-family: BitOperator;
-    src: url('/Application/View/font/8bitoperator.ttf');
+    src: url('../font/8bitoperator.ttf');
 }
 
 
@@ -31,22 +31,22 @@ body {
 .personagem {
 	display: block;
 	position: absolute;
-	width: 5%;
-	height: 6%;
+	width: 50px;
+	height: 63px;
 }
 
 .tardis {
 	display: block;
 	position: absolute;
-	width: 2%;
-	height: 5%;
+	width: 35px;
+	height: 60px;
 }
 
 .tiro {
 	display: none;
 	position: absolute;
-	width: 5%;
-	height: 1%;
+	width: 15px;
+	height: 5px;
 	background-color: #b2e617;
 }
 
@@ -68,3 +68,12 @@ body {
 	top: 0px;
 }
 
+.score {
+	float: left;
+	position: absolute;
+	left: 90%;
+	top: 85%;
+	font-family: BitOperator;
+	font-size: 32px;
+	color: #FFF;
+}
