@@ -31,6 +31,10 @@ $(document).on("keyup", function(e) {
 
 $(document).on("ready", function() {
 
+    MAPHORSIZE = $("#fundo").css("width");
+    MAPVERSIZE = $("#fundo").css("height");
+    alert(MAPHORSIZE);
+
     $.gameLoop = function() {
         if (tecla == 38) {
             dalekMovement = "up";
